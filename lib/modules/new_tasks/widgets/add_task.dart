@@ -1,3 +1,4 @@
+import 'package:tasko/shared/components/common/sounds.dart';
 import 'package:tasko/shared/components/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -259,6 +260,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                           ? Colors.green.withOpacity(.7)
                           : MyTheme.foregroundColor.withOpacity(.9),
                       fun: () async {
+                        click();
                         await createDatabase(widget.database);
                         if (_formKey.currentState!.validate()) {
                           if (widget.task != null) {
@@ -293,7 +295,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                                     color: selectedColor,
                                     date_format: selectedDate.toString())
                                 .then((_) {
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
                             }).catchError((error) {
                               print("Error: $error");
                             });

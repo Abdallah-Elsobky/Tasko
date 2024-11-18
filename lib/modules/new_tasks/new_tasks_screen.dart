@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tasko/modules/new_tasks/widgets/add_task.dart';
 import 'package:tasko/shared/components/common/database.dart';
 import 'package:tasko/shared/components/common/task_item.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../models/task.dart';
+import '../../shared/components/common/sounds.dart';
 import '../../shared/styles/styles.dart';
 import '../../shared/styles/theme.dart';
 
@@ -63,122 +65,145 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
                   Column(
                     children: (getTasksByPriority(index).length == 0)
                         ? [
-                      Opacity(
-                        opacity: .2,
-                        child: Image.asset(
-                          flork[(rand + index) % flork.length],
-                          height: 90.h,
-                          width: 90.w,
-                        ),
-                      ),
-                    ]
-                        : getTasksByPriority(index).entries.map((entry) {
-                      Task task =
-                          entry.value; // Access task from the map entry
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              typeShape(index, 8, 5),
-                              Container(
-                                height: containerHeight,
-                                width: 2,
-                                color: Colors.black26,
+                            Opacity(
+                              opacity: .2,
+                              child: Image.asset(
+                                flork[(rand + index) % flork.length],
+                                height: 90.h,
+                                width: 90.w,
                               ),
-                            ],
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Dismissible(
-                              key: UniqueKey(),
-                              // Use the task's ID as a unique key
-                              direction: DismissDirection.horizontal,
-                              background: dismissableBackground(
-                                prefixColor:
-                                MyTheme.archiveColor.withOpacity(0.9),
-                                suffixColor:
-                                MyTheme.deleteColor.withOpacity(0.7),
-                              ),
-                              onDismissed: (direction) async {
-                                if (direction ==
-                                    DismissDirection.startToEnd) {
-                                  // TODO create archive function delete item from todo and add into archive
-                                  archive_tasks.add(task);
-                                  await insertToArchiveTasks(
-                                      database: widget.database!,
-                                      task: task,
-                                      date_format:
-                                      DateTime.now().toString())
-                                      .then((value) {
-                                    deleteTask(task);
-                                  });
-                                } else {
-                                  deleteTask(task);
-                                }
-                              },
-                              // Use `entry.key` and `task`
-                              child: Stack(
-                                children: [
-                                  buildTaskItem(
-                                      task: task,
-                                      database: widget.database!,
-                                      color: getTaskColor(task.color)),
-                                  Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        _toggleBottomSheet(task: task);
-                                      },
-                                      child: const CircleAvatar(
-                                        backgroundColor: Colors.black26,
-                                        child: Icon(
-                                          Icons.edit,
-                                          color: MyTheme.backgroundColor,
-                                        ),
+                            ),
+                          ]
+                        : [
+                            AnimationLimiter(
+                                child: Column(
+                              children: getTasksByPriority(index)
+                                  .entries
+                                  .map((entry) {
+                                Task task = entry
+                                    .value; // Access task from the map entry
+                                return AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 800),
+                                  child: SlideAnimation(
+                                    verticalOffset: 200.0,
+                                    child: FadeInAnimation(
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              typeShape(index, 8, 5),
+                                              Container(
+                                                height: containerHeight,
+                                                width: 2,
+                                                color: Colors.black26,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(width: 10),
+                                          Expanded(
+                                            child: Dismissible(
+                                              key: UniqueKey(),
+                                              // Use the task's ID as a unique key
+                                              direction:
+                                                  DismissDirection.horizontal,
+                                              background: dismissableBackground(
+                                                prefixColor: MyTheme
+                                                    .archiveColor
+                                                    .withOpacity(0.9),
+                                                suffixColor: MyTheme.deleteColor
+                                                    .withOpacity(0.7),
+                                              ),
+                                              onDismissed: (direction) async {
+                                                if (direction ==
+                                                    DismissDirection
+                                                        .startToEnd) {
+                                                  archive();
+                                                  archive_tasks.add(task);
+                                                  await insertToArchiveTasks(
+                                                          database:
+                                                              widget.database!,
+                                                          task: task,
+                                                          date_format:
+                                                              DateTime.now()
+                                                                  .toString())
+                                                      .then((value) {
+                                                    deleteTask(task);
+                                                  });
+                                                } else {
+                                                  delete();
+                                                  deleteTask(task);
+                                                }
+                                              },
+                                              // Use `entry.key` and `task`
+                                              child: Stack(
+                                                children: [
+                                                  buildTaskItem(
+                                                      task: task,
+                                                      database:
+                                                          widget.database!,
+                                                      color: getTaskColor(
+                                                          task.color)),
+                                                  Positioned(
+                                                    top: 5,
+                                                    right: 5,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        _toggleBottomSheet(
+                                                            task: task);
+                                                      },
+                                                      child: const CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.black26,
+                                                        child: Icon(
+                                                          Icons.edit,
+                                                          color: MyTheme
+                                                              .backgroundColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    right: 5,
+                                                    bottom: 60,
+                                                    child: defaultButton(
+                                                      color: Color.lerp(
+                                                          getTaskColor(
+                                                              task.color),
+                                                          Colors.black,
+                                                          .4)!,
+                                                      text: 'done',
+                                                      fun: () async {
+                                                        done();
+                                                        await insertToDoneTasks(
+                                                                database: widget
+                                                                    .database!,
+                                                                task: task,
+                                                                date_format: DateTime
+                                                                        .now()
+                                                                    .toString())
+                                                            .then((value) {
+                                                          deleteTask(task);
+                                                        });
+                                                      },
+                                                      width: 100.w,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ), // Build the task item
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    top: 90,
-                                    left: 150,
-                                    child: IconButton(onPressed: () {
-                                      print(task.id);
-                                    }, icon: Icon(Icons.add,size: 50,color: Colors.white,)
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 5,
-                                    bottom: 60,
-                                    child: defaultButton(
-                                      color: Color.lerp(
-                                          getTaskColor(task.color),
-                                          Colors.black, .4)!,
-                                      text: 'done',
-                                      fun: () async {
-                                        await insertToDoneTasks(
-                                            database:
-                                            widget.database!,
-                                            task: task,
-                                            date_format:
-                                            DateTime.now()
-                                                .toString())
-                                            .then((value) {
-                                          deleteTask(task);
-                                        });
-                                      },
-                                      width: 100.w,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ],
-                              ), // Build the task item
-                            ),
-                          ),
-                        ],
-                      );
-                    }).toList(), // Convert map entries to a list of widgets
+                                );
+                              }).toList(),
+                            ))
+                          ],
                   ),
                 ],
               );
@@ -202,7 +227,7 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
   Future<void> getTaskData() async {
     clearTasks();
     List<Map<String, dynamic>> tasks =
-    await getTasksFromDatabase(widget.database);
+        await getTasksFromDatabase(widget.database);
     setState(() {
       for (var task in tasks) {
         Task taskObject = Task(
@@ -237,6 +262,7 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
   }
 
   void _toggleBottomSheet({Task? task}) {
+    click();
     if (isBottomSheetShown) {
       isBottomSheetShown = false;
       sheetIcon = const Icon(Icons.edit);
@@ -244,13 +270,12 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
     } else {
       scaffoldKey.currentState
           ?.showBottomSheet(
-            (context) =>
-            AddNewTaskScreen(
+            (context) => AddNewTaskScreen(
               database: widget.database,
               task: task,
             ),
-        backgroundColor: MyTheme.backgroundColor,
-      )
+            backgroundColor: MyTheme.backgroundColor,
+          )
           .closed
           .then((_) async {
         await getTaskData();

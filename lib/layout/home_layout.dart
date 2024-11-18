@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tasko/modules/archived_tasks/archived_tasks_screen.dart';
 import 'package:tasko/modules/done_tasks/done_tasks_screen.dart';
 import 'package:tasko/modules/new_tasks/new_tasks_screen.dart';
@@ -12,6 +13,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path/path.dart';
 import '../modules/new_tasks/widgets/add_task.dart';
+import '../shared/components/common/sounds.dart';
 import '../shared/components/enums.dart';
 import '../shared/styles/styles.dart';
 import 'package:restart_app/restart_app.dart';
@@ -74,7 +76,8 @@ class _HomeLayoutState extends State<HomeLayout> {
   Widget build(BuildContext context) {
     if (database == null) {
       return Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        backgroundColor: MyTheme.backgroundColor,
+        body: Center(child: Image.asset("assets/images/flork/flork5.png")),
       );
     }
 
@@ -156,6 +159,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   }
 
   void showAlertDialog(BuildContext context) {
+    click();
     showDialog(
       context: context,
       builder: (BuildContext context) {

@@ -1,3 +1,6 @@
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:lottie/lottie.dart';
+import 'package:tasko/shared/components/common/sounds.dart';
 import 'package:tasko/shared/styles/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,69 +42,82 @@ class _DoneTasksScreenState extends State<DoneTasksScreen> {
         child: (done_tasks.isEmpty)
             ? Opacity(
                 opacity: .3,
-                child: Image.asset(flork[random.nextInt(flork.length)]))
-            : ListView.separated(
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                      key: UniqueKey(),
-                      direction: DismissDirection.horizontal,
-                      background: dismissableBackground(
-                        prefixColor:
-                        MyTheme.archiveColor.withOpacity(0.9),
-                        suffixColor:
-                        MyTheme.deleteColor.withOpacity(0.7),
-                      ),
-                      onDismissed: (direction) async {
-                        if (direction == DismissDirection.startToEnd) {
-                          // TODO create archive function delete item from done and add into archive
-                          archive_tasks.add(done_tasks[index]);
-                          await insertToArchiveTasks(
-                                  database: widget.database!,
-                                  task: done_tasks[index],
-                                  date_format: DateTime.now().toString())
-                              .then((value) {
-                            deleteTask(done_tasks[index]);
-                          });
-                        } else {
-                          deleteTask(done_tasks[index]);
-                        }
-                      },
-                      child: Stack(
-                        children: [
-                          buildTaskItem(
-                            task: done_tasks[index],
-                            database: widget.database!,
-                            color: Colors.green,
-                          ),
-                          Positioned(
-                            right: 10,
-                            bottom: 70,
-                            child: defaultButton(
-                                color: MyTheme.foregroundColor.withOpacity(.8),
-                                text: "Reopen",
-                                width: 100.w,
-                                fontSize: 17,
-                                fun: () async {
-                                  await toTasks(
+                child: Lottie.asset("assets/lottie/done.json"))
+            : AnimationLimiter(
+              child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 800),
+                      child: SlideAnimation(
+                        verticalOffset: 200,
+                        child: FadeInAnimation(
+                          child: Dismissible(
+                              key: UniqueKey(),
+                              direction: DismissDirection.horizontal,
+                              background: dismissableBackground(
+                                prefixColor:
+                                MyTheme.archiveColor.withOpacity(0.9),
+                                suffixColor:
+                                MyTheme.deleteColor.withOpacity(0.7),
+                              ),
+                              onDismissed: (direction) async {
+                                if (direction == DismissDirection.startToEnd) {
+                                  archive();
+                                  archive_tasks.add(done_tasks[index]);
+                                  await insertToArchiveTasks(
+                                          database: widget.database!,
                                           task: done_tasks[index],
-                                          database: widget.database!)
-                                      .then((onValue) {
-                                    setState(() {
-                                      done_tasks.removeAt(index);
-                                    });
+                                          date_format: DateTime.now().toString())
+                                      .then((value) {
+                                    deleteTask(done_tasks[index]);
                                   });
-                                }),
-                          )
-                        ],
-                      ));
-                },
-                itemCount: done_tasks.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    height: 20.h,
-                  );
-                },
-              ),
+                                } else {
+                                  delete();
+                                  deleteTask(done_tasks[index]);
+                                }
+                              },
+                              child: Stack(
+                                children: [
+                                  buildTaskItem(
+                                    task: done_tasks[index],
+                                    database: widget.database!,
+                                    color: Colors.green,
+                                  ),
+                                  Positioned(
+                                    right: 10,
+                                    bottom: 70,
+                                    child: defaultButton(
+                                        color: MyTheme.foregroundColor.withOpacity(.8),
+                                        text: "Reopen",
+                                        width: 100.w,
+                                        fontSize: 17,
+                                        fun: () async {
+                                          reopen();
+                                          await toTasks(
+                                                  task: done_tasks[index],
+                                                  database: widget.database!)
+                                              .then((onValue) {
+                                            setState(() {
+                                              done_tasks.removeAt(index);
+                                            });
+                                          });
+                                        }),
+                                  )
+                                ],
+                              )),
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: done_tasks.length,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      height: 20.h,
+                    );
+                  },
+                ),
+            ),
       ),
     );
   }

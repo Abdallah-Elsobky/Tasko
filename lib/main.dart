@@ -1,5 +1,7 @@
 import 'package:tasko/layout/home_layout.dart';
 import 'package:tasko/modules/new_tasks/new_tasks_screen.dart';
+import 'package:tasko/modules/onboarding/onboarding_screen.dart';
+import 'package:tasko/modules/splash/splash_screen.dart';
 import 'package:tasko/shared/styles/theme.dart';
 import 'package:tasko/test.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner:false,
         // showPerformanceOverlay: true,
-        home : HomeLayout(),
+        home : SplashScreen(),
       ),
     );
   }

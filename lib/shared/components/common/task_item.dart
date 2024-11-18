@@ -82,21 +82,9 @@ Widget buildTaskItem({required Task task, required Database database , Color col
                           ),
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         flex: 1,
                         child: Text(''),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     _toggleBottomSheet(task: task);
-                        //   },
-                        //   child: const CircleAvatar(
-                        //     backgroundColor: Colors.black26,
-                        //     child: Icon(
-                        //       Icons.edit,
-                        //       color: MyTheme.backgroundColor,
-                        //     ),
-                        //   ),
-                        // ),
                       ),
                     ],
                   ),
@@ -119,24 +107,9 @@ Widget buildTaskItem({required Task task, required Database database , Color col
                           ),
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         flex: 1,
                         child: Text(''),
-                        // defaultButton(
-                        //   color: const Color(0xFF95B567),
-                        //   text: 'done',
-                        //   fun: () async {
-                        //     await insertToDoneTasks(
-                        //             database: widget.database!,
-                        //             task: task,
-                        //             date_format: DateTime.now().toString())
-                        //         .then((value) {
-                        //       deleteTask(task);
-                        //     });
-                        //   },
-                        //   width: 100.w,
-                        //   fontSize: 15,
-                        // ),
                       ),
                     ],
                   ),
