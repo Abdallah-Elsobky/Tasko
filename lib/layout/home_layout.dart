@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasko/modules/archived_tasks/archived_tasks_screen.dart';
 import 'package:tasko/modules/done_tasks/done_tasks_screen.dart';
 import 'package:tasko/modules/new_tasks/new_tasks_screen.dart';
@@ -18,21 +19,27 @@ import '../shared/components/enums.dart';
 import '../shared/styles/styles.dart';
 import 'package:restart_app/restart_app.dart';
 
-
 class HomeLayout extends StatefulWidget {
   @override
   State<HomeLayout> createState() => _HomeLayoutState();
+  int curindex = 0;
+
+  HomeLayout({int? num}) {
+    curindex = num ?? 0;
+  }
 }
 
 class _HomeLayoutState extends State<HomeLayout> {
   Database? database;
-  int curindex = 0;
-
+  bool _isWaiting = true;
   @override
   void initState() {
     super.initState();
     initializeDatabase();
+    _simulateDelay();
   }
+
+
 
   Future<void> initializeDatabase() async {
     database = await openDatabase(
@@ -50,7 +57,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         });
         database
             .execute(
-            'CREATE TABLE done (id INTEGER, title TEXT, description TEXT, date TEXT, time TEXT, type INTEGER, status TEXT, color INTEGER, date_format Text)')
+                'CREATE TABLE done (id INTEGER, title TEXT, description TEXT, date TEXT, time TEXT, type INTEGER, status TEXT, color INTEGER, date_format Text)')
             .then((onValue) {
           print("done Table created");
         }).catchError((onError) {
@@ -58,7 +65,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         });
         database
             .execute(
-            'CREATE TABLE archive (id INTEGER, title TEXT, description TEXT, date TEXT, time TEXT, type INTEGER, status TEXT, color INTEGER, date_format Text)')
+                'CREATE TABLE archive (id INTEGER, title TEXT, description TEXT, date TEXT, time TEXT, type INTEGER, status TEXT, color INTEGER, date_format Text)')
             .then((onValue) {
           print("archive Table created");
         }).catchError((onError) {
@@ -72,13 +79,25 @@ class _HomeLayoutState extends State<HomeLayout> {
     setState(() {});
   }
 
+  Future<void> _simulateDelay() async {
+    await Future.delayed(Duration(milliseconds: 2500)); // 1-second delay
+    setState(() {
+      _isWaiting = false; // Stop waiting after the delay
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    if (database == null) {
+    if (_isWaiting && widget.curindex != 3) {
       return Scaffold(
         backgroundColor: MyTheme.backgroundColor,
-        body: Center(child: Image.asset("assets/images/flork/flork5.png")),
+        body: Center(child: Lottie.asset("assets/lottie/database.json")),
       );
+    }
+
+    if(database == null){
+      return const Scaffold();
     }
 
     List<Widget> screens = [
@@ -95,7 +114,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       appBar: AppBar(
         backgroundColor: MyTheme.foregroundColor,
         title: Text(
-          titles[curindex],
+          titles[widget.curindex],
           style: titleText(color: Colors.white60, fontSize: 22),
         ),
         actions: [
@@ -109,22 +128,30 @@ class _HomeLayoutState extends State<HomeLayout> {
           ),
         ],
       ),
-      body: screens[curindex],
+      body: screens[widget.curindex],
       bottomNavigationBar: CurvedNavigationBar(
         items: [
           Icon(Icons.density_medium,
-              color: (curindex == 0) ? Colors.white : MyTheme.backgroundColor),
+              color: (widget.curindex == 0)
+                  ? Colors.white
+                  : MyTheme.backgroundColor),
           Icon(Icons.task_alt,
-              color: (curindex == 1) ? Colors.white : MyTheme.backgroundColor),
+              color: (widget.curindex == 1)
+                  ? Colors.white
+                  : MyTheme.backgroundColor),
           Icon(Icons.archive_outlined,
-              color: (curindex == 2) ? Colors.white : MyTheme.backgroundColor),
+              color: (widget.curindex == 2)
+                  ? Colors.white
+                  : MyTheme.backgroundColor),
           Icon(Icons.settings,
-              color: (curindex == 3) ? Colors.white : MyTheme.backgroundColor),
+              color: (widget.curindex == 3)
+                  ? Colors.white
+                  : MyTheme.backgroundColor),
         ],
-        index: curindex,
+        index: widget.curindex,
         onTap: (index) {
           setState(() {
-            curindex = index;
+            widget.curindex = index;
           });
         },
         color: MyTheme.foregroundColor,
@@ -152,10 +179,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     } catch (error) {
       print('Error deleting database: $error');
     }
-    setState(() {
-
-
-    });
+    setState(() {});
   }
 
   void showAlertDialog(BuildContext context) {
@@ -176,7 +200,7 @@ class _HomeLayoutState extends State<HomeLayout> {
             TextButton(
               child: Text(
                 "Cancel",
-                style: TextStyle(color: MyTheme.dialogColor),
+                style: TextStyle(color: Colors.green),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -189,8 +213,9 @@ class _HomeLayoutState extends State<HomeLayout> {
               ),
               onPressed: () {
                 deleteDatabaseFile();
-                Restart.restartApp();
-                Navigator.of(context).pop();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeLayout()));
+                // Restart.restartApp();
+                // Navigator.of(context).pop();
               },
             ),
           ],

@@ -4,6 +4,7 @@ import 'package:tasko/shared/styles/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:themed/themed.dart';
 
 import '../../models/task.dart';
 import '../styles/styles.dart';
@@ -132,6 +133,30 @@ List<Color> type_colors = [
   MyTheme.type2Color,
   MyTheme.type3Color,
   MyTheme.type4Color,
+];
+
+List<Color> theme_colors = [
+  // light
+  MyTheme.lightTheme1Color,
+  MyTheme.lightTheme2Color,
+  MyTheme.lightTheme3Color,
+  MyTheme.lightTheme4Color,
+  MyTheme.lightTheme5Color,
+  MyTheme.lightTheme6Color,
+  MyTheme.lightTheme7Color,
+  MyTheme.lightTheme8Color,
+  MyTheme.lightTheme9Color,
+];
+List<Map<ThemeRef, Object>> themes = [
+  TealTheme,
+  BlueTheme,
+  RedTheme,
+  PurpleTheme,
+  PinkTheme,
+  GreenTheme,
+  DefaultTheme,
+  OrangeTheme,
+  GrayTheme,
 ];
 List<String> images = [
   'assets/images/shape/shape1.png',
@@ -276,7 +301,8 @@ Widget typeShape(int index, double initialSize, int count) {
   );
 }
 
-Widget dismissableBackground({required Color prefixColor,required Color suffixColor}) {
+Widget dismissableBackground(
+    {required Color prefixColor, required Color suffixColor}) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),

@@ -78,7 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ? defaultButton(
                       text: "Get Started",
                       height: 55.h,
-                      color: Colors.blue.shade900,
+                      color: Color.lerp(MyTheme.foregroundColor, MyTheme.coverColor, .5)!,
                       fun: () {
                         Navigator.pushReplacement(
                             context,

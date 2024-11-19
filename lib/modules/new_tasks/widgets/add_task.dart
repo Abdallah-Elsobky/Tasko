@@ -223,7 +223,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                             height: 80.h,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: 14,
+                              itemCount: task_colors.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -295,7 +295,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                                     color: selectedColor,
                                     date_format: selectedDate.toString())
                                 .then((_) {
-                              // Navigator.pop(context);
+                              Navigator.pop(context);
                             }).catchError((error) {
                               print("Error: $error");
                             });

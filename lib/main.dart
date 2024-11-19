@@ -1,7 +1,9 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasko/layout/home_layout.dart';
 import 'package:tasko/modules/new_tasks/new_tasks_screen.dart';
 import 'package:tasko/modules/onboarding/onboarding_screen.dart';
 import 'package:tasko/modules/splash/splash_screen.dart';
+import 'package:tasko/shared/components/components.dart';
 import 'package:tasko/shared/styles/theme.dart';
 import 'package:tasko/test.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +24,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    Themed.currentTheme = BlueTheme;
+    // Themed.currentTheme = BlueTheme;
+    shared_p();
+  }
+
+  Future<void> shared_p() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int theme_index = await prefs.getInt('theme') ?? 0;
+    prefs.setInt('theme', theme_index);
+    prefs.setBool('old_user', true);
+    Themed.currentTheme = themes[theme_index];
   }
 
   @override
@@ -32,9 +43,9 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => MaterialApp(
-        debugShowCheckedModeBanner:false,
+        debugShowCheckedModeBanner: false,
         // showPerformanceOverlay: true,
-        home : SplashScreen(),
+        home: SplashScreen(),
       ),
     );
   }
