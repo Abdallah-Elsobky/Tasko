@@ -37,7 +37,7 @@ Tasko is a powerful and intuitive task management app designed to help users org
 
 - **Flutter**: The primary framework used for building the app, providing a smooth and visually appealing user experience.
 - **Dart**: The programming language used to develop the application logic and features.
-- **SQLite **: For task persistence
+- **SQLite**: For task persistence
 
 ## Installation
 
