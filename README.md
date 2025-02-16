@@ -4,17 +4,17 @@ A new Flutter project.
 
 ## App Screens 
 
-<img src="https://github.com/user-attachments/assets/097777f5-f403-4759-af40-31ff2208b62d" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/95d052c3-2c6d-4e07-9471-1f10061e2c8e" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/3530d179-5410-4116-8c54-84258216740f" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/61d069c4-ebaf-4195-bd2e-0c8d2d7f126f" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/cf582494-0e11-4e5b-b2ff-dea897303761" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/47c83162-e0cc-4196-90aa-4daaa9489bfb" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/b4c9101a-fd0f-4636-8417-c2721b0b102e" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/a3de0a64-b697-42bf-b9e0-e357941023ed" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/90bae6fb-9055-41dd-a85c-763efa544e12" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/226e4dfd-5069-461b-971f-e0cc1f027536" alt="BMI Calculator " width="100" />
-<img src="https://github.com/user-attachments/assets/982230b7-b854-42c4-86b9-a65eab17854b" alt="BMI Calculator " width="100" />
+<img src="https://github.com/user-attachments/assets/097777f5-f403-4759-af40-31ff2208b62d" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/95d052c3-2c6d-4e07-9471-1f10061e2c8e" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/3530d179-5410-4116-8c54-84258216740f" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/61d069c4-ebaf-4195-bd2e-0c8d2d7f126f" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/cf582494-0e11-4e5b-b2ff-dea897303761" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/47c83162-e0cc-4196-90aa-4daaa9489bfb" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/b4c9101a-fd0f-4636-8417-c2721b0b102e" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/a3de0a64-b697-42bf-b9e0-e357941023ed" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/90bae6fb-9055-41dd-a85c-763efa544e12" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/226e4dfd-5069-461b-971f-e0cc1f027536" alt="Tasko " width="100" />
+<img src="https://github.com/user-attachments/assets/982230b7-b854-42c4-86b9-a65eab17854b" alt="Tasko " width="100" />
 
 
 
